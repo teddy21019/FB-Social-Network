@@ -1,5 +1,6 @@
 /DATA
-*.ipynb
 /__pycache__
 /.ipynb_checkpoints
 *.csv
+ac_eigen_centrality.json
+.DS_Store

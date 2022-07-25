@@ -1,5 +1,7 @@
 from functools import cached_property
-from itertools import islice
+from itertools import islice, count
+from pickletools import int4
+from pydoc import pager
 import networkx as nx
 import pandas
 import scipy
@@ -15,12 +17,17 @@ class Centrality:
         self.G.add_nodes_from(df.user_id.unique(), bipartite = 0)
         self.G.add_nodes_from(df.page_id.unique(), bipartite = 1)
 
+        mask = df.reaction_time != 0
+        df = df[mask]
+
         print('Creating edges...')
-        self.G.add_weighted_edges_from(zip(df.user_id, df.page_id, df.reaction_time))
+        self.G.add_weighted_edges_from(
+            zip(df.user_id, df.page_id, df.reaction_time)
+            )
         print('Graph creation completed successfully')
 
-        self.user_node = {n for n, d in self.G.nodes(data=True) if d["bipartite"] == 0}
-        self.page_node = {n for n, d in self.G.nodes(data=True) if d["bipartite"] == 1}
+        self.user_node = sorted({n for n, d in self.G.nodes(data=True) if d["bipartite"] == 0})
+        self.page_node = sorted({n for n, d in self.G.nodes(data=True) if d["bipartite"] == 1})
 
 
     @cached_property
@@ -57,6 +64,10 @@ class Centrality:
                 self.G, row_order=self.user_node, column_order=self.page_node)
 
     @cached_property
+    def A_matrix_no_weight(self):
+        return (self.A_matrix > 0) * 1
+
+    @cached_property
     def Social_matrix(self):
         """
         Build a social matrix from the A_matrix.
@@ -68,7 +79,42 @@ class Centrality:
         return bmat([[None, self.A_matrix],[self.A_matrix.transpose(), None]])
 
     @cached_property
-    def eigenvector_centrality(self):
+    def page_comembership_matrix(self):
+        """
+        The unweighted co-membership matrix of the pages.
+
+        It is defined as A'A, where A is the biadjacency matrix of the graph.
+
+        Return
+        ------
+        A m-by-m matrix, where m is the number of pages in the graph.
+        """
+        A = self.A_matrix_no_weight
+        return (A.transpose() @ A).asfptype()
+
+    @cached_property
+    def user_comembership_matrix(self):
+        """
+        The unweighted co-membership matrix of the users.
+
+        It is defined as AA', where A is the biadjacency matrix of the graph.
+
+        Returns
+        -------
+        A n-by-n matrix, where n is the number of users in the graph.
+        """
+        A = self.A_matrix_no_weight
+        return (A @ A.transpose()).asfptype()
+
+
+    @cached_property
+    def page_comembership_graph(self):
+
+        g = nx.from_scipy_sparse_matrix(self.page_comembership_matrix)
+        mapping = {u:v for u, v in zip(count(), self.page_node)}
+        return nx.relabel_nodes(g, mapping=mapping)
+
+    def eigenvector_centrality_func(self, weight = 'weight'):
         """
         Returns the eigenvector centrality of the graph for users and pages, respectively.
 
@@ -80,19 +126,32 @@ class Centrality:
 
         Once we get the eigenvector and eigenvalue of pages, which is only 1000*1000, we can calculate the eigenvectors of the users directly from it.
         """
+        A = self.A_matrix_no_weight
+        if weight == 'weight':
+            A = self.A_matrix
+
         print("Calculating pages' eigenvector centrality")
-        evalue_page, evector_page = eigsh((self.A_matrix.transpose() @ self.A_matrix).asfptype(), k=1, which='LA') 
+        evalue_page, evector_page = eigsh((A.transpose() @ A).asfptype(), k=1, which='LA') 
         
         evalue_page = evalue_page[0]
 
         print("Calulating user's eigenvector centrality")
-        evector_user = (self.A_matrix @ evector_page) / np.sqrt(evalue_page)
+        evector_user = (A @ evector_page) / np.sqrt(evalue_page)
 
-        evector_page = dict(zip(self.page_node,[r[0] for r in evector_page]))
-        evector_user = dict(zip(self.user_node,[r[0] for r in evector_user]))
+        evector_page = dict(zip(self.page_node,[abs(r[0]) for r in evector_page]))
+        evector_user = dict(zip(self.user_node,[abs(r[0]) for r in evector_user]))
 
         return evector_user, evector_page
 
+    @cached_property
+    def eigenvector_centrality(self):
+        return self.eigenvector_centrality_func('weight')
+
+    @cached_property
+    def eigenvector_centrality_unweighted(self):
+        return self.eigenvector_centrality_func(weight = 'None')
+
+    ## without weight?
     @cached_property
     def closeness_centrality(self):
         # return nx.bipartite.closeness_centrality(self.G, self.user_node)
@@ -106,7 +165,7 @@ class Centrality:
 
         print('Processing closeness centrality')
         for i, node in enumerate(top):
-            print(f'Processing {i}/{n}', end = "\x1b\r")
+            print(f'Processing {i+1}/{n}', end = "\x1b\r")
             sp = path_length(self.G, node)
             totsp = sum(sp.values())
             if totsp > 0.0:
@@ -129,15 +188,14 @@ class Centrality:
         print()
         return closeness
 
+
     @cached_property
-    def flow_betweenness_centrality(self):
-        print('Note! Approimating flow betweenness centrality.')
-        return nx.algorithms.centrality.approximate_current_flow_betweenness_centrality(
-            self.G, weight='weight')
+    def community_detection(self):
+        return nx.community.greedy_modularity_communities(self.page_comembership_graph, weight = 'weight')
 
 
-def top10(d:dict) ->dict:
+def topn(d:dict, n:int) ->dict:
     """
     Get the top 10 elements of the dictionary from the given dictionary.
     """
-    return dict(islice(d.items(), 0, 10))
+    return dict(islice(d.items(), 0, n))

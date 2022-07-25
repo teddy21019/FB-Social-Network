@@ -25,25 +25,35 @@ Full_centrality = Full_centrality %>% left_join(page_name_map, by='page_id') %>%
 
 # 不同種類中心性
 
-## Degree Centrality
-
-簡而言之就是總觸及率
-
 ``` r
-week_1 = min(Full_centrality$week)
+get_top_10 = function(centrality){
+  Full_centrality %>% 
+    filter(week == min(week)) %>% 
+    arrange(desc(.data[[centrality]])) %>% 
+    select(page_name) %>% head(10) %>% pull
+}
 
-top10.deg.centrality.week1 = Full_centrality %>% filter(week == week_1) %>% arrange(desc(degree_centrality)) %>% select(page_name) %>% head(10) %>% pull
-
-
-top10.deg.centrality.all = Full_centrality %>% filter(page_name %in% top10.deg.centrality.week1) %>% select(page_name,degree_centrality, week)
-
-
-(top10.deg.centrality.all %>% ggplot() + 
-  geom_line(aes(y = degree_centrality, x = week, color=page_name)) +
-  scale_x_date(labels = date_format("%Y-%m"))) %>% ggplotly
+plot_top_10 = function(top_10_list, centrality){
+  top10.centrality.all = Full_centrality %>% filter(page_name %in% top_10_list) %>% select(page_name,.data[[centrality]], week)
+  
+  (top10.centrality.all %>% ggplot() + 
+    geom_line(aes(y = .data[[centrality]], x = week, color=page_name)) +
+    scale_x_date(labels = date_format("%Y-%m"))) #%>% ggplotly
+}
+t10 = get_top_10('degree_centrality')
+plot_top_10(t10, 'degree_centrality')
 ```
 
-![](graph_centrality_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](graph_centrality_files/figure-gfm/unnamed-chunk-2-1.png)<!-- --> \##
+Degree Centrality 簡而言之就是總觸及率
+
+``` r
+centrality = 'degree_centrality'
+top.10.deg = get_top_10(centrality)
+plot_top_10(top.10.deg, centrality)
+```
+
+![](graph_centrality_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ## Eigenvalue Centrality
 
@@ -55,32 +65,20 @@ C_E^{page} =  \frac{1}{\lambda} \sum\_{u \in user} C_E^{user}(u) a\_{iu}
 $$
 
 ``` r
-top10.eig.centrality.week1 = Full_centrality %>% filter(week == week_1) %>% arrange(desc(eigenvector_centrality)) %>% select(page_name) %>% head(10) %>% pull
-
-
-top10.eig.centrality.all = Full_centrality %>% filter(page_name %in% top10.eig.centrality.week1) %>% select(page_name,eigenvector_centrality, week)
-
-
-top10.eig.centrality.all %>% ggplot() + 
-  geom_line(aes(y = eigenvector_centrality, x = week, color=page_name)) +
-  scale_x_date(labels = date_format("%Y-%m-%d"))
-```
-
-![](graph_centrality_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
-
-``` r
-top10.unweighted.eig.centrality.week1 = Full_centrality %>% filter(week == week_1) %>% arrange(desc(unweighted_eigenvector_centrality)) %>% select(page_name) %>% head(10) %>% pull
-
-
-top10.unweighted.eig.centrality.all = Full_centrality %>% filter(page_name %in% top10.unweighted.eig.centrality.week1) %>% select(page_name,unweighted_eigenvector_centrality, week)
-
-
-top10.unweighted.eig.centrality.all %>% ggplot() + 
-  geom_line(aes(y = unweighted_eigenvector_centrality, x = week, color=page_name)) +
-  scale_x_date(labels = date_format("%Y-%m-%d"))
+centrality = 'eigenvector_centrality'
+top.10.eig = get_top_10(centrality)
+plot_top_10(top.10.eig, centrality)
 ```
 
 ![](graph_centrality_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
+centrality = 'unweighted_eigenvector_centrality'
+top.10.unw.eig = get_top_10(centrality)
+plot_top_10(top.10.unw.eig, centrality)
+```
+
+![](graph_centrality_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 Narmalize 後容易被 outlire
 影響（10月上下，有一個用戶特別勤奮對其中一個粉專按讚，則他與那個粉專的中心性都會增加）
@@ -90,18 +88,12 @@ Narmalize 後容易被 outlire
 到其他節點的平均距離（次數）越高，中心性越小。
 
 ``` r
-top10.cls.centrality.week1 = Full_centrality %>% filter(week == week_1) %>% arrange(desc(closeness_centrality)) %>% select(page_name) %>% head(10) %>% pull
-
-
-top10.cls.centrality.all = Full_centrality %>% filter(page_name %in% top10.cls.centrality.week1) %>% select(page_name,closeness_centrality, week)
-
-
-(top10.cls.centrality.all %>% ggplot() + 
-  geom_line(aes(y = closeness_centrality, x = week, color=page_name)) +
-  scale_x_date(labels = date_format("%Y-%m"))) %>% ggplotly
+centrality = 'closeness_centrality'
+top.10.cls = get_top_10(centrality)
+plot_top_10(top.10.cls, centrality)
 ```
 
-![](graph_centrality_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](graph_centrality_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 互動次數在計算過程中不具意義，較不具代表性的衡量
 
@@ -117,37 +109,46 @@ centrality。
 ## What happned in 2016-09-25?
 
 ``` r
+#out.width="100%"}
+
 top10.unweighted.eig.centrality.week_other = Full_centrality %>% filter(week == '2016-09-25') %>% arrange(desc(unweighted_eigenvector_centrality)) %>% select(page_name) %>% head(3) %>% pull
 
 
-top10.unweighted.eig.centrality.all = Full_centrality %>% filter(page_name %in% c(top10.unweighted.eig.centrality.week1[1:3], top10.unweighted.eig.centrality.week_other)) %>% select(page_name,unweighted_eigenvector_centrality, week)
+top10.unweighted.eig.centrality.all = Full_centrality %>% filter(page_name %in% c(top.10.unw.eig[1:3], top10.unweighted.eig.centrality.week_other)) %>% select(page_name,unweighted_eigenvector_centrality, week)
 
 
-p = top10.unweighted.eig.centrality.all %>% ggplot() + 
+top10.unweighted.eig.centrality.all %>% ggplot() + 
   geom_line(aes(y = unweighted_eigenvector_centrality, x = week, color=page_name)) +
   scale_x_date(labels = date_format("%Y-%m-%d"))
-
-ggplotly(p)
 ```
 
-<img src="graph_centrality_files/figure-gfm/unnamed-chunk-6-1.png" width="100%" />
+![](graph_centrality_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
+#ggplotly(p)
+```
+
+``` r
+#out.width="100%"}
+
 top10.eig.centrality.week_other = Full_centrality %>% filter(week == '2016-10-02') %>% arrange(desc(eigenvector_centrality)) %>% select(page_name) %>% head(4) %>% pull
 
 
-top10.eig.centrality.all = Full_centrality %>% filter(page_name %in% c(top10.eig.centrality.week1[1:4], top10.eig.centrality.week_other)) %>% select(page_name,unweighted_eigenvector_centrality, week)
+top10.eig.centrality.all = Full_centrality %>% filter(page_name %in% c(top.10.eig[1:4], top10.eig.centrality.week_other)) %>% select(page_name,unweighted_eigenvector_centrality, week)
 
 
-p = top10.eig.centrality.all %>% ggplot() + 
+top10.eig.centrality.all %>% ggplot() + 
   geom_line(aes(y = unweighted_eigenvector_centrality, x = week, color=page_name)) +
   scale_x_date(labels = date_format("%Y-%m-%d"))
-
-ggplotly(p)
 ```
 
-<img src="graph_centrality_files/figure-gfm/unnamed-chunk-7-1.png" width="100%" />
-\# 社群偵測 Community Detection
+![](graph_centrality_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
+#ggplotly(p)
+```
+
+# 社群偵測 Community Detection
 
 將用戶粉專互動的社會網路投影到只有粉專的社會網路上，並以此進行community
 detection（透過 Louvain
@@ -175,25 +176,25 @@ plot_avg_centrality('degree_centrality',
                     'Degree Centrality')
 ```
 
-![](graph_centrality_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](graph_centrality_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 plot_avg_centrality('eigenvector_centrality', 
                     'Eigenvector Centrality')
 ```
 
-![](graph_centrality_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
+![](graph_centrality_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 ``` r
 plot_avg_centrality('unweighted_eigenvector_centrality', 
                     'Unweighted Eigenvector Centrality')
 ```
 
-![](graph_centrality_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
+![](graph_centrality_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
 
 ``` r
 plot_avg_centrality('closeness_centrality', 
                     'Closeness Centrality')
 ```
 
-![](graph_centrality_files/figure-gfm/unnamed-chunk-8-4.png)<!-- -->
+![](graph_centrality_files/figure-gfm/unnamed-chunk-9-4.png)<!-- -->

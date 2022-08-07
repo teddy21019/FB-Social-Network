@@ -7,9 +7,9 @@ def extract_week(s:str)->str:
     return s.split('_')[0]
 
 
-if __name__ == '__main__':
+def combine_centralities(s:str):
 
-    file_list = [file for file in os.listdir('Result') if file.endswith('.csv')]
+    file_list = [file for file in os.listdir(s) if file.endswith('.csv')]
     week_list = [extract_week(week) for week in file_list]
 
     df = pd.DataFrame()
@@ -22,3 +22,4 @@ if __name__ == '__main__':
 
     df.to_csv('Full_centrality.csv')
 
+    return df

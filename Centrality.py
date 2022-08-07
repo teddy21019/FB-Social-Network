@@ -193,9 +193,73 @@ class Centrality:
     def community_detection(self):
         return nx.community.greedy_modularity_communities(self.page_comembership_graph, weight = 'weight')
 
+    @staticmethod
+    def combine_centralities(result_path:str, file_type:str = 'csv'):
+        import os
+        file_list = [file for file in os.listdir(result_path) if file.endswith("." + file_type)]
+        week_list = [extract_week(week) for week in file_list]
+
+        df = pandas.DataFrame()
+
+        for week, file in zip(week_list,file_list):
+            newdf = pandas.read_csv(f"{result_path}/{file}")
+            newdf["eigenvector_centrality"] = abs(newdf["eigenvector_centrality"])
+            newdf["unweighted_eigenvector_centrality"] = abs(newdf["unweighted_eigenvector_centrality"])
+
+            newdf['week'] = week
+            df = df.append(newdf, ignore_index=True)
+
+        df.to_csv(f'{result_path}/Full_centrality.csv')
+
+        return df
+    
+    
+
 
 def topn(d:dict, n:int) ->dict:
     """
     Get the top 10 elements of the dictionary from the given dictionary.
     """
     return dict(islice(d.items(), 0, n))
+
+def extract_week(s:str)->str:
+    return s.split('_')[0]
+
+from dataclasses import dataclass
+from typing import Dict
+
+@dataclass
+class CommunityStat:
+    week: str
+    trump_community:list
+    clinton_community:list
+    other_community:list
+
+    def filter_by_centrality(self, centrality_list):
+        self.trump_community = [id for id in self.trump_community if id in centrality_list]
+        self.clinton_community = [id for id in self.clinton_community if id in centrality_list]
+        self.other_community = [id for id in self.other_community if id in centrality_list]
+        return self
+    
+    @property
+    def dict(self):
+        self.__dict = dict()
+        self.__dict.update({t:1 for t in self.trump_community})
+        self.__dict.update({c:2 for c in self.clinton_community})
+        self.__dict.update({o:3 for o in self.other_community})
+
+        return self.__dict
+
+    def average_centrality(self, week_centrality:Dict):
+        """
+            week_centrality : {
+                182739503862  : 0.73,
+                9672727986293 : 0.23,...
+            }
+        """
+        import numpy as np
+        trump_centrality = np.mean([week_centrality[id] for id in self.trump_community ])
+        clinton_centrality = np.mean([week_centrality[id] for id in self.clinton_community ])
+        other_centrality = np.mean([week_centrality[id] for id in self.other_community ])
+
+        return (trump_centrality, clinton_centrality, other_centrality)

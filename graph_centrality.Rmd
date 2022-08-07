@@ -1,9 +1,11 @@
 ---
 title: "R Notebook"
-output: github_document
-  # html_document:
-  #   df_print: paged
-  #   keep_md: true
+output:
+  html_document:
+    df_print: paged
+    keep_md: yes
+  pdf_document: 
+    latex_engine: xelatex
 ---
 
 ```{r message=FALSE, warning=FALSE}
@@ -165,4 +167,53 @@ plot_avg_centrality('unweighted_eigenvector_centrality',
 plot_avg_centrality('closeness_centrality', 
                     'Closeness Centrality')
 
+```
+
+# 回歸
+將四種不同中心性進行panel data regression
+$$
+\text{centrality}_{it} = \alpha + \text{fake_count_cum}_{it} \times \beta + \text{is_debate}_{it} \times \gamma + u_i
+$$
+其中 $\text{is_debate}_t 紀錄了總統大選辯論會的時間，觀察到辯論會時eigenvector centrality有大幅下降，需要把這個因子納入考量，以研究假新聞對中心性的影響。
+而\text{fake_count_cum}_{it} 則紀錄了過去累計發布假新聞數量。我假設為線性增加，但centrality實際上會被Normalized，所以可以考慮取對數。
+
+我根據粉專類別(type) 進行迴歸。
+
+
+1. figure 
+例如 Trump 等政治人物或記者
+
+2. group
+例如 Occupy Democrats 等政府/非政府組織粉專
+
+3. media
+例如 CNN 等媒體。底下又有細分電視、網路、報紙等
+
+4. others
+演員、喜劇、歌手等
+
+
+
+```{css, echo=FALSE}
+
+table{
+  width:100%;
+  }
+```
+
+## Degree Centrality
+```{r echo=FALSE}
+htmltools::includeHTML('Result/reg_result/deg_c.html')
+```
+## Eigenvector Centrality
+```{r echo=FALSE}
+htmltools::includeHTML('Result/reg_result/eig_c.html')
+```
+## Unweighted-Eigenvector Centrality
+```{r echo=FALSE}
+htmltools::includeHTML('Result/reg_result/uneig_c.html')
+```
+## Closeness Centrality
+```{r echo=FALSE}
+htmltools::includeHTML('Result/reg_result/close_c.html')
 ```

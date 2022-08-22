@@ -10,6 +10,22 @@ rename week week_temp
 gen week = date(week_temp, "YMD")
 drop week_temp
 
+rename degree_centrality c_temp
+gen degree_centrality = c_temp * 100
+drop c_temp
+
+rename eigenvector_centrality c_temp
+gen eigenvector_centrality =  c_temp * 100
+drop c_temp
+
+rename unweighted_eigenvector_centralit c_temp
+gen unweighted_eigenvector_centralit =  c_temp * 100
+drop c_temp
+
+rename closeness_centrality c_temp
+gen closeness_centrality =  c_temp * 100
+drop c_temp
+
 xtset page_id week
 
 // drop missing value

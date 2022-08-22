@@ -19,15 +19,15 @@ Full_centrality <- read_csv("Full_centrality.csv",
                      page_name = col_character(),
                      week = col_date(format = "%Y-%m-%d")))
 
-library(readr)
-page_name_map <- read_csv("page_name_map.csv", 
-                          col_types = cols(
-                            page_id = col_character(), 
-                            page_name = col_character()
-                          ))
+page_name_map = read_csv("DATA/1000-page-info.csv",
+     col_types = cols( 
+                     page_id = col_character(), 
+                     page_name = col_character()
+                     )
+     )[,1:2]
 
 
-Full_centrality = Full_centrality %>% left_join(page_name_map, by='page_id') %>% select(-X1) %>%relocate(page_name, .after = page_id) 
+Full_centrality = Full_centrality %>% left_join(page_name_map, by='page_id') %>%relocate(page_name, .after = page_id) 
 ```
 
 # 不同種類中心性
@@ -36,15 +36,15 @@ get_top_10 = function(centrality){
   Full_centrality %>% 
     filter(week == min(week)) %>% 
     arrange(desc(.data[[centrality]])) %>% 
-    select(page_name) %>% head(10) %>% pull
+    select(page_id) %>% head(10) %>% pull
 }
 
 plot_top_10 = function(top_10_list, centrality){
-  top10.centrality.all = Full_centrality %>% filter(page_name %in% top_10_list) %>% select(page_name,.data[[centrality]], week)
+  top10.centrality.all = Full_centrality %>% filter(page_id %in% top_10_list) %>% select(page_name,.data[[centrality]], week)
   
   (top10.centrality.all %>% ggplot() + 
     geom_line(aes(y = .data[[centrality]], x = week, color=page_name)) +
-    scale_x_date(labels = date_format("%Y-%m"))) #%>% ggplotly
+    scale_x_date(labels = date_format("%Y-%m"))) %>% ggplotly
 }
 t10 = get_top_10('degree_centrality')
 plot_top_10(t10, 'degree_centrality')
@@ -168,6 +168,58 @@ plot_avg_centrality('closeness_centrality',
                     'Closeness Centrality')
 
 ```
+
+# 移除政治人物
+
+
+```{r}
+Full_centrality <- read_csv("Result/without_politicians/Full_centrality.csv", 
+    col_types = cols(X1 = col_skip(), 
+                     page_id = col_character(), 
+                     page_name = col_character(),
+                     week = col_date(format = "%Y-%m-%d")))
+
+page_name_map = read_csv("DATA/1000-page-info.csv",
+     col_types = cols( 
+                     page_id = col_character(), 
+                     page_name = col_character()
+                     )
+     )[,1:2]
+
+Full_centrality = Full_centrality %>% left_join(page_name_map, by='page_id') %>%relocate(page_name, .after = page_id) 
+```
+
+## Degree Centrality
+
+```{r}
+centrality = 'degree_centrality'
+top.10.deg = get_top_10(centrality)
+plot_top_10(top.10.deg, centrality)
+```
+
+## Eigenvalue Centrality
+
+
+```{r}
+centrality = 'eigenvector_centrality'
+top.10.eig = get_top_10(centrality)
+plot_top_10(top.10.eig, centrality)
+```
+
+```{r}
+centrality = 'unweighted_eigenvector_centrality'
+top.10.unw.eig = get_top_10(centrality)
+plot_top_10(top.10.unw.eig, centrality)
+```
+
+## Closeness Centrality
+
+```{r}
+centrality = 'closeness_centrality'
+top.10.cls = get_top_10(centrality)
+plot_top_10(top.10.cls, centrality)
+```
+
 
 # 回歸
 將四種不同中心性進行panel data regression

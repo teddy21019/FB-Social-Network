@@ -1,0 +1,48 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/abc/Desktop/110-2/RA/Social Nerwork/Result/reg_result/chap02.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 8 Sep 2022, 20:26:39
+{txt}
+{com}. use stata/food, clear
+{err}{p 0 4 2}
+file stata/food.dta
+not found
+{p_end}
+{txt}{search r(601), local:r(601);}
+
+end of do-file
+
+{search r(601), local:r(601);}
+
+{com}. help use
+
+. use ../datafiles/food
+{err}{p 0 4 2}
+file ../datafiles/food.dta
+not found
+{p_end}
+{txt}{search r(601), local:r(601);}
+
+{com}. pwd
+{res}/Users/abc/Desktop/110-2/RA/Social Nerwork/Result/reg_result
+
+{com}. c(pwd)
+{err}command {bf}c{sf} is unrecognized
+{txt}{search r(199), local:r(199);}
+
+{com}. 
+. do "/var/folders/cf/zj8139lx2tz461mknf_0j4jm0000gn/T//SD01717.000000"
+{txt}
+{com}. * setup
+. //version 15.1
+. cd "/Users/abc/Desktop/111-1/東海計量/助教/datafiles"
+{res}/Users/abc/Desktop/111-1/東海計量/助教/datafiles
+{txt}
+{com}. 
+. clear all
+{txt}
+{com}. capture log close
+{smcl}
+{com}{sf}{ul off}

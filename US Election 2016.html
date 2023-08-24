@@ -7451,6 +7451,8 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><img alt="2016 美國總統候選人希拉蕊與川普" src="https://cdn.theatlantic.com/thumbor/o_IJXppH0ThxstSxeBmtrBA00So=/0x104:2000x1229/1920x1080/media/img/2016/08/29/WEL_Fallows_header_2000/original.jpg"/>
+<em>圖片來源：<a href="https://www.theatlantic.com/magazine/archive/2016/10/who-will-win/497561/">The Altlantic</a></em></p>
 <style>
     body{
         margin-left: 20%;
@@ -7468,8 +7470,9 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
 <h2 id="%E7%B5%90%E8%AB%96"><em>結論</em><a class="anchor-link" href="#%E7%B5%90%E8%AB%96">¶</a></h2><ul>
-<li><em>過去親共和黨粉絲專頁的特徵中心性領先所有粉專</em></li>
-<li><em>在 2016/9/25 那一個禮拜，第一次總統辯論，偏共和黨陣營的粉專，特徵中心性大幅下降</em></li>
+<li><em>使用大選期間臉書用戶與分專的互動資訊，進行社會網路分析(Social Network Analysis, SNA)</em></li>
+<li><em>過去傾共和黨粉絲專頁的特徵中心性(Eigenvector Centrality)領先所有粉專</em></li>
+<li><em>在 2016/9/26 舉行第一次總統辯論，使得傾共和黨陣營的粉專，特徵中心性大幅下降</em></li>
 <li><em>透過 Louvain 分群法將粉專之間分陣營後，可以明顯看到共和黨與民主黨，在 9/25 的風向進行交叉，但隨後又回來</em></li>
 </ul>
 <hr/>
@@ -7483,7 +7486,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>從美國大選期間，臉書（以下簡稱FB）的粉絲專頁以及用戶之間的互動關係，可以大致上了解一些選舉風向上的改變。</p>
-<p>比方說，當中間選民發現某陣營的態度改變，或是習慣透過網軍操縱資訊後，對該陣營的支持度就有可能改變。而用戶對陣營的關注度與支持度，可以從用戶與不同粉專之間的互動行為略知一二。</p>
+<p>比方說，當中間選民發現某陣營的態度改變，或是習慣透過網軍操縱資訊後，他們對該陣營的支持度就有可能改變。而用戶對陣營的關注度與支持度，可以從用戶與不同粉專之間的互動行為略知一二。</p>
 <p>這些互動行為構成了一個龐大的社會網路(Social network)。隨著時間的演進，這個社會網路的結構，用戶與粉專之間的互動強度，也會隨時間改變。</p>
 </div>
 </div>
@@ -7496,7 +7499,7 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>此研究將2016年
 7/31 至 10/30 （美國大選前一週）
-的臉書粉專與用戶互動數據進行分析。
+的臉書粉專與用戶互動數據進行社會網路分析。
 此為擔任台大<a href="https://sites.google.com/site/chihshenghsieh/">謝志昇</a>教授研究助理期間所進行之研究的一小部分。
 另外數據從 Facebook API 取得而來，資料清理過程與結果為研究機密，恕不公開。</p>
 </div>
@@ -7508,11 +7511,11 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99">讀取資料<a class="anchor-link" href="#%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99">¶</a></h1><p>原始資料龐大且繁雜，為了方便後續執行，我將資料改存為 <code>.pkl</code> 檔</p>
+<h1 id="%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99">讀取資料<a class="anchor-link" href="#%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99">¶</a></h1><p>原始資料龐大且繁雜，為了方便後續執行，我事先將資料改存為 <code>.pkl</code> 檔</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7531,6 +7534,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell celltag_hide_cell">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -7556,7 +7560,6 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_hide_cell">
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7805,7 +7808,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E7%A4%BE%E6%9C%83%E7%B6%B2%E8%B7%AF">社會網路<a class="anchor-link" href="#%E7%A4%BE%E6%9C%83%E7%B6%B2%E8%B7%AF">¶</a></h1><p>粉專與用戶之間的關係，可以畫成一個社會網路。</p>
+<h1 id="%E7%A4%BE%E6%9C%83%E7%B6%B2%E8%B7%AF%E5%88%86%E6%9E%90">社會網路分析<a class="anchor-link" href="#%E7%A4%BE%E6%9C%83%E7%B6%B2%E8%B7%AF%E5%88%86%E6%9E%90">¶</a></h1><p>粉專與用戶之間的關係，可以畫成一個社會網路。</p>
 <p>比方說，將用戶比喻為紅點，粉專比喻為藍點。每互動一次，就畫一條線。像這樣：</p>
 </div>
 </div>
@@ -7828,7 +7831,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>使用 <code>networkx</code> 套件，將上面粉專之間的關係建構為一個社會網路。因為有好多禮拜，所以每個禮拜都建一個</p>
+<p>使用 <code>networkx</code> 套件，將上面粉專之間的關係建構為一個社會網路。因為有多個禮拜，所以每個禮拜都建一個</p>
 </div>
 </div>
 </div>
@@ -7866,11 +7869,11 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E4%B8%AD%E5%BF%83%E6%80%A7">中心性<a class="anchor-link" href="#%E4%B8%AD%E5%BF%83%E6%80%A7">¶</a></h2><p><strong>中心性</strong>顧名思義，就是一個衡量「有多具有中心地位」的概念。換句話說就是「重要性」。一般來說有分為幾種中心性，衡量幾種重要性：</p>
+<h2 id="%E4%B8%AD%E5%BF%83%E6%80%A7">中心性<a class="anchor-link" href="#%E4%B8%AD%E5%BF%83%E6%80%A7">¶</a></h2><p><strong>中心性</strong>顧名思義，就是一個衡量「有多具有中心地位」的概念。換句話說就是在社會網路中的「重要性」。一般來說有分為幾種中心性，分別從不同角度衡量重要性：</p>
 <ul>
-<li>度中心性(degree centrality)：衡量有多少節點與之接觸。這是最直觀的，靠連接者的數量決</li>
-<li>中介中心性(betweenness centrality)：一個節點如果 betweenness centrality 高，就很有可能其他節點在相互連接的最短路徑上，都會需要經過他。</li>
-<li>接近中心性(closeness centrality)：衡量一個節點跟其他人所有人之間的路徑長短程度。 closeness centrality 高，則接近哪一個節點都很快。</li>
+<li>度中心性(degree centrality)：衡量有多少節點與之接觸。這是最直觀的中心性 - 連接的節點越多，各個節點就越重要。</li>
+<li>中介中心性(betweenness centrality)：一個節點如果中介中心性高，表示他出現在很多組節點的最短路徑上。其他節點之間如果要傳遞資訊，會頻繁地通過這個節點。</li>
+<li>接近中心性(closeness centrality)：衡量一個節點跟其他人所有人之間的路徑長短程度。接近中心性高，則接近哪一個節點都很快。這種節點不見得要連出去很多，但他要找誰都可以很快聯繫到。</li>
 </ul>
 <p>不同的中心性，衡量了不同的概念。在統統大選的分析中，我認為最能代表「風向」概念的，是特徵（向量）中心性 (eigenvector centrality)</p>
 </div>
@@ -7900,8 +7903,8 @@ $$</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>在上面的方程式中， $a_{up}$ 代表了用戶$u$與粉專$p$，在這一個禮拜的互動次數。我將互動次數作為重要性的加權。之後我也會把這個加權拿掉，看看結果如何。</p>
-<p>為了要計算這種中心性，我們必須先瞭解一些社會網路的數學。假如將這個 $a_{up}$建構成一個 $(n_u \times n_p)$ 矩陣 $A$，並且將所有用戶的中心性彙整成一個 $(n_u \times 1)$ 向量 $C^U$，所有粉專的中心性彙整成一個 $(n_p \times 1)$ 向量 $C^P$，那麼：
+<p>在上面的方程式中， $a_{up}$ 代表了用戶$u$與粉專$p$，在這一個禮拜的互動次數。我將互動次數作為重要性的加權。之後我也會把這個加權拿掉，看看結果如何。$\lambda$ 則是特徵值，可以視為一種伸縮量，以避免將其他節點的中心性加總後始自己的中心性過大。</p>
+<p>為了要計算這種中心性，我們必須先瞭解一些社會網路以及圖論的數學。假如將這個 $a_{up}$建構成一個 $(n_u \times n_p)$ 矩陣 $A$，並且將所有用戶的中心性彙整成一個 $(n_u \times 1)$ 向量 $C^U$，所有粉專的中心性彙整成一個 $(n_p \times 1)$ 向量 $C^P$，那麼：
 $$
 AC^P = \lambda C^U \\
 A'C^U = \lambda C^P
@@ -8561,7 +8564,7 @@ if (outputEl) {{
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>果然可以看到，在 9/25 後面兩週，民主黨陣營的粉絲專頁，包然極左派粉專 Occupy Democrats、希拉蕊的官方粉專、哈芬登郵報（HuffPost），在特徵中心性上都來到了極高值。
 這意味著以右派為首的粉絲專頁以及用戶的活躍程度大幅增加，其中也可能包含中間選民的態度改變。</p>
-<p>以下將第一週前5名與第八週前五名並排呈現：</p>
+<p>以下將第一週前5名與第八週前5名並排呈現：</p>
 </div>
 </div>
 </div>
@@ -8631,7 +8634,7 @@ if (outputEl) {{
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E4%BA%92%E5%8B%95%E6%AC%A1%E6%95%B8%E7%82%BA%E5%8A%A0%E6%AC%8A%E7%9A%84%E5%BD%B1%E9%9F%BF">互動次數為加權的影響<a class="anchor-link" href="#%E4%BA%92%E5%8B%95%E6%AC%A1%E6%95%B8%E7%82%BA%E5%8A%A0%E6%AC%8A%E7%9A%84%E5%BD%B1%E9%9F%BF">¶</a></h2><p>以上的分析中，都是將「互動次數」作為加權所計算出來的特徵向量，換句話說，是 $A'A$ 的特徵向量。然而，或許右派與左派支持者的互動頻率較為不同，比方說川普支持者或許較頻繁的按讚或是留言。這樣的行為是否值得被考慮在計算特徵中心性時作為加權，我認為有待商榷。因此以下提供另外一種計算特徵中心性的方法，不過著次只要有互動，無論多少次，都算為一個 1 :
+<h2 id="%E4%BA%92%E5%8B%95%E6%AC%A1%E6%95%B8%E7%82%BA%E5%8A%A0%E6%AC%8A%E7%9A%84%E5%BD%B1%E9%9F%BF">互動次數為加權的影響<a class="anchor-link" href="#%E4%BA%92%E5%8B%95%E6%AC%A1%E6%95%B8%E7%82%BA%E5%8A%A0%E6%AC%8A%E7%9A%84%E5%BD%B1%E9%9F%BF">¶</a></h2><p>以上的分析中，都是將「互動次數」作為加權所計算出來的特徵向量，換句話說，是計算 $A'A$ 的特徵向量。然而，或許右派與左派支持者的互動頻率較為不同，比方說川普支持者或許較頻繁的按讚或是留言。這樣的行為是否值得被考慮在計算特徵中心性時作為加權，我認為有待商榷。因此以下提供另外一種計算特徵中心性的方法，不過著次只要有互動，無論多少次，都算為一個 1 :
 $$
 
 b_{pn} =  1(a_{pn} \ge 1)
@@ -8814,7 +8817,7 @@ if (outputEl) {{
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%E7%B2%89%E5%B0%88%E6%94%BF%E9%BB%A8%E5%82%BE%E5%90%91----%E8%87%AA%E5%8B%95%E5%88%86%E9%A1%9E">粉專政黨傾向 -- 自動分類<a class="anchor-link" href="#%E7%B2%89%E5%B0%88%E6%94%BF%E9%BB%A8%E5%82%BE%E5%90%91----%E8%87%AA%E5%8B%95%E5%88%86%E9%A1%9E">¶</a></h1><p>以上的分析都是藉由 Google 以及查證的方式，來將粉專進行分類。如果用戶本身偏向某一政黨，則他在FB上的互動也會透露他的政黨傾向。比方說，平常按川普貼文讚的用戶，高幾率也會與 Fox News 以及他的後援會互動。</p>
+<h1 id="%E7%B2%89%E5%B0%88%E6%94%BF%E9%BB%A8%E5%82%BE%E5%90%91----%E8%87%AA%E5%8B%95%E5%88%86%E9%A1%9E">粉專政黨傾向 -- 自動分類<a class="anchor-link" href="#%E7%B2%89%E5%B0%88%E6%94%BF%E9%BB%A8%E5%82%BE%E5%90%91----%E8%87%AA%E5%8B%95%E5%88%86%E9%A1%9E">¶</a></h1><p>以上的分析都是藉由 Google 以及查證的方式，來將粉專進行政治傾向的分類。如果用戶本身偏向某一政黨，則他在FB上的互動也會透露他的政黨傾向。比方說，平常按川普貼文讚的用戶，高幾率也會與 Fox News 以及他的後援會互動。</p>
 <p>由於先前已經建構出粉專與用戶之間的互動網路，因此可以藉由 <strong>群體偵測 (community detection)</strong> 的方式，為不同粉專進行分類。也可以看看有沒有一些粉專，過去的用戶偏向共和黨，而後來搖擺至民主黨。</p>
 </div>
 </div>
@@ -8841,7 +8844,7 @@ Q = \frac{1}{2m} \sum{ij} \left[
     A_{ij} -\frac{k_i k_j}{2m}
   \right] \delta(C_i, C_j)
 $$</p>
-<p>其中 $\frac{k_i k_j}{2m}$ 可以看成兩的節點之間該有多少權重的期望值，而與 $A_{ij}$的差異，就是他篇其期望的多少。這個差異只有在兩個節點在同一個群體之內有意義，因為如果兩個節點之間的連接權重多出越多，直觀上就越值得被分在同一群組內。因此乘上$\delta(C_i, C_j)=1 \quad \text{if} C_i = C_j$，也就是只有 i 與 j 在同一個群組內，才會是 1。</p>
+<p>其中 $\frac{k_i k_j}{2m}$ 可以看成兩的節點之間該有多少權重的期望值，而與 $A_{ij}$的差異，就是他偏離期望的程度。這個差異只有在兩個節點在同一個群體之內有意義，因為如果兩個節點之間的連接權重多出越多，直觀上就越值得被分在同一群組內。因此乘上$\delta(C_i, C_j)=1 \quad \text{if} C_i = C_j$，也就是只有 i 與 j 在同一個群組內，才會是 1。</p>
 <p>越好的分群，這個值應該要越大，因為如果兩個節點之間的連接程度高過於平均($A_{ij} - \frac{k_i k_j}{2m}$ 很大)，卻被分到不同群 ($\delta(C_i, C_j) = 0$)，這個 Q 就會變小。
 分群問題變成一個極大化的問題。Blondel et al.(2008) 在 Louvain 大學發明了一種貪婪演算法，來最大化這個模組度 Q。</p>
 <p>這個非監督式的分群方法可以非常快，過去也被拿來分析 Twitter 還有手機通訊等等資料。這些資料動輒上億個節點，所以用在我們的資料是綽綽有餘。</p>
@@ -8908,7 +8911,7 @@ $$</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><code>communities_by_week</code> 包含了每一個禮拜的分群。每一個禮拜包含了數個經Louvain分群之後的結果。</p>
-<p>我將包含川普的那一群標為共和黨"Republican"、包含希拉蕊的那一群標為民主黨 "Democrat"、另外還有另一位總統候選人 Gary Johnson 所在的自由意志黨 "Libertarian" 。其餘分類為"Others"</p>
+<p>我進一步將包含川普的分群標示為共和黨"Republican"、包含希拉蕊的分群標為民主黨 "Democrat"、另外還有另一位總統候選人 Gary Johnson 所在的自由意志黨 "Libertarian" 。其餘分類為"Others"。</p>
 </div>
 </div>
 </div>
